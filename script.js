@@ -20,8 +20,15 @@ document.addEventListener('DOMContentLoaded', () => {
         localStorage.setItem(STORAGE_KEY, JSON.stringify(tasks));
     }
 
+    // Escapes text for safe use both as HTML content AND inside a
+    // double-quoted HTML attribute (e.g. an editable input's value).
     function escapeHtml(str) {
-        return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+        return str
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#39;");
     }
 
     function formatDate(dateStr) {
@@ -99,6 +106,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!btn) return;
         const index = Number(btn.dataset.index);
         const task = tasks[index];
+        if (!task) return;
 
         if (btn.classList.contains('complete-btn')) {
             task.completed = !task.completed;

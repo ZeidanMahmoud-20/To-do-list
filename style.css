@@ -1,6 +1,5 @@
 :root {
     --desk: #1f3a2e;
-    --desk-dark: #16291f;
     --paper: #f5efe0;
     --paper-line: #d9cfae;
     --ink: #2b2a25;
@@ -8,21 +7,23 @@
     --stamp: #a94a2c;
     --done: #4f7a52;
     --done-bg: #e3ecdf;
-    --font-display: 'Zilla Slab', serif;
-    --font-body: 'Work Sans', sans-serif;
+    --font-display: 'Zilla Slab', Georgia, serif;
+    --font-body: 'Work Sans', -apple-system, sans-serif;
 }
 
 * {
     box-sizing: border-box;
 }
 
-body {
+html, body {
     margin: 0;
+    overflow-x: hidden;
+}
+
+body {
     min-height: 100vh;
     font-family: var(--font-body);
-    background:
-        radial-gradient(circle at 20% 20%, rgba(255,255,255,0.03), transparent 40%),
-        var(--desk);
+    background: var(--desk);
     color: var(--ink);
 }
 
@@ -32,14 +33,17 @@ body {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    padding: 48px 20px;
-    gap: 24px;
+    padding: clamp(24px, 6vw, 48px) 16px;
+    gap: 20px;
 }
 
+/* Paper-stack effect: decorative layers are pinned behind the real card
+   with a negative z-index, so they can never cover its content. */
 .card-stack {
     position: relative;
     width: 100%;
-    max-width: 460px;
+    max-width: 440px;
+    z-index: 0;
 }
 
 .card-stack::before,
@@ -48,44 +52,45 @@ body {
     position: absolute;
     inset: 0;
     background: var(--paper);
-    border-radius: 4px;
+    border-radius: 6px;
+    z-index: -1;
+    pointer-events: none;
 }
 
 .card-stack::before {
-    transform: rotate(-3deg) translateY(6px);
-    box-shadow: 0 10px 24px rgba(0,0,0,0.25);
+    transform: rotate(-2.5deg) translateY(5px);
+    box-shadow: 0 10px 22px rgba(0,0,0,0.22);
 }
 
 .card-stack::after {
-    transform: rotate(2deg) translateY(3px);
-    box-shadow: 0 10px 24px rgba(0,0,0,0.2);
+    transform: rotate(1.8deg) translateY(3px);
+    box-shadow: 0 8px 18px rgba(0,0,0,0.18);
 }
 
 .card {
     position: relative;
     background: var(--paper);
-    border-radius: 4px;
-    padding: 32px 28px 20px;
-    box-shadow: 0 18px 36px rgba(0,0,0,0.35);
+    border-radius: 6px;
+    padding: clamp(20px, 5vw, 32px) clamp(16px, 5vw, 28px) 18px;
+    box-shadow: 0 16px 32px rgba(0,0,0,0.32);
 }
 
 .card__header {
-    text-align: left;
-    margin-bottom: 24px;
+    margin-bottom: 22px;
 }
 
 .stamp {
     display: inline-block;
     border: 3px solid var(--stamp);
     border-radius: 6px;
-    padding: 6px 14px;
+    padding: 5px 12px;
     transform: rotate(-2deg);
 }
 
 .stamp__text {
     font-family: var(--font-display);
     font-weight: 700;
-    font-size: 1.6rem;
+    font-size: clamp(1.3rem, 5vw, 1.6rem);
     letter-spacing: 0.06em;
     color: var(--stamp);
 }
@@ -94,35 +99,51 @@ body {
     margin: 12px 2px 0;
     font-style: italic;
     color: var(--ink-soft);
-    font-size: 0.92rem;
+    font-size: 0.9rem;
 }
 
 .entry {
     display: flex;
     flex-wrap: wrap;
     gap: 8px;
-    padding-bottom: 20px;
+    padding-bottom: 18px;
     border-bottom: 2px dashed var(--paper-line);
-    margin-bottom: 18px;
+    margin-bottom: 16px;
 }
 
 .entry input[type="text"] {
-    flex: 1 1 180px;
+    flex: 1 1 160px;
+}
+
+.entry input[type="date"] {
+    flex: 1 1 140px;
+}
+
+.entry button {
+    flex: 1 1 100%;
+}
+
+@media (min-width: 420px) {
+    .entry button {
+        flex: 0 0 auto;
+    }
 }
 
 .entry input,
 .entry button {
     font-family: var(--font-body);
-    font-size: 0.95rem;
-    padding: 10px 12px;
-    border-radius: 4px;
+    font-size: 1rem;
+    padding: 11px 12px;
+    border-radius: 5px;
     border: 1px solid var(--paper-line);
     background: #fffdf8;
     color: var(--ink);
+    min-height: 44px;
 }
 
-.entry input:focus,
-.entry button:focus-visible {
+.entry input:focus-visible,
+.entry button:focus-visible,
+.task__actions button:focus-visible {
     outline: 2px solid var(--stamp);
     outline-offset: 1px;
 }
@@ -133,7 +154,6 @@ body {
     border: none;
     font-weight: 600;
     cursor: pointer;
-    transition: transform 0.15s ease, background 0.15s ease;
 }
 
 .entry button:hover {
@@ -147,7 +167,7 @@ body {
     display: flex;
     flex-direction: column;
     gap: 10px;
-    max-height: 340px;
+    max-height: min(340px, 45vh);
     overflow-y: auto;
 }
 
@@ -163,12 +183,13 @@ body {
 .task {
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 10px;
     padding: 10px 12px;
     background: #fffdf8;
     border: 1px solid var(--paper-line);
     border-left: 5px solid var(--stamp);
-    border-radius: 3px;
+    border-radius: 4px;
+    flex-wrap: wrap;
 }
 
 .task.completed {
@@ -177,11 +198,11 @@ body {
 }
 
 .task__info {
-    flex: 1;
+    flex: 1 1 140px;
     min-width: 0;
     display: flex;
     align-items: baseline;
-    gap: 10px;
+    gap: 8px;
     flex-wrap: wrap;
 }
 
@@ -196,26 +217,30 @@ body {
 }
 
 .task__date {
-    font-size: 0.78rem;
+    font-size: 0.76rem;
     color: var(--ink-soft);
     white-space: nowrap;
 }
 
 .task__actions {
     display: flex;
-    gap: 6px;
+    gap: 4px;
     flex-shrink: 0;
+    margin-left: auto;
 }
 
 .task__actions button {
     border: none;
     background: transparent;
     cursor: pointer;
-    padding: 4px;
-    border-radius: 4px;
+    padding: 6px;
+    min-width: 32px;
+    min-height: 32px;
+    border-radius: 5px;
     display: flex;
+    align-items: center;
+    justify-content: center;
     color: var(--ink-soft);
-    transition: color 0.15s ease, background 0.15s ease;
 }
 
 .task__actions button:hover {
@@ -228,13 +253,21 @@ body {
 
 .task__edit {
     display: flex;
-    flex: 1;
+    flex: 1 1 100%;
     gap: 8px;
     flex-wrap: wrap;
 }
 
 .task__edit input {
-    flex: 1 1 140px;
+    flex: 1 1 130px;
+    min-height: 40px;
+    padding: 8px 10px;
+    border-radius: 4px;
+    border: 1px solid var(--paper-line);
+    background: #fffdf8;
+    color: var(--ink);
+    font-family: var(--font-body);
+    font-size: 0.95rem;
 }
 
 .card__footer {
@@ -246,17 +279,13 @@ body {
 
 .credit {
     color: #d8dfd4;
-    font-size: 0.78rem;
+    font-size: 0.76rem;
     text-align: center;
     line-height: 1.6;
+    max-width: 440px;
+    padding: 0 8px;
 }
 
 .credit a {
     color: #e9c9b0;
-}
-
-@media (max-width: 400px) {
-    .card {
-        padding: 24px 18px 16px;
-    }
 }

@@ -3,29 +3,45 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ZTDL - Zeidan's To Do List</title>
+    <title>ZTDL — Zeidan's To-Do List</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Zilla+Slab:wght@500;700&family=Work+Sans:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <div class="container">
-        <header>
-            <h1>ZTDL</h1>
-            <p>Zeidan's To Do List</p>
-        </header>
+    <div class="desk">
 
-        <div class="input-section">
-            <input type="text" id="taskInput" placeholder="Add a new task...">
-            <input type="date" id="taskDate">
-            <button id="addBtn">Add Task</button>
+        <div class="card-stack">
+            <div class="card" id="card">
+
+                <header class="card__header">
+                    <div class="stamp">
+                        <span class="stamp__text">ZTDL</span>
+                    </div>
+                    <p class="tagline">Zeidan's To-Do List — filed &amp; tracked</p>
+                </header>
+
+                <form class="entry" id="entryForm">
+                    <input type="text" id="taskInput" placeholder="File a new task…" autocomplete="off">
+                    <input type="date" id="taskDate">
+                    <button type="submit" id="addBtn">Add</button>
+                </form>
+
+                <ul class="ledger" id="taskList"></ul>
+
+                <footer class="card__footer">
+                    <span id="taskCount">0 tasks filed</span>
+                </footer>
+
+            </div>
         </div>
 
-        <ul id="taskList"></ul>
+        <p class="credit">
+            &copy; 2026 Zeidan Mahmoud. All rights reserved.<br>
+            Contact: <a href="mailto:zeidanmahmoud123@gmail.com">zeidanmahmoud123@gmail.com</a> · 01122608560
+        </p>
 
-        <footer>
-            <p>&copy; 2026 Zeidan Mahmoud. All rights reserved.</p>
-            <p>Contact: <a href="mailto:zeidanmahmoud123@gmail.com">zeidanmahmoud123@gmail.com</a> | Phone: 01122608560</p>
-        </footer>
     </div>
 
     <script src="script.js"></script>
